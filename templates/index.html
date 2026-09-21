@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Digital College Notice Board</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        header {
+            background: #12355b;
+            color: white;
+            padding: 20px 8%;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+        }
+
+        .logo p {
+            margin-top: 5px;
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .admin-button {
+            background: white;
+            color: #12355b;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .hero {
+            padding: 45px 8%;
+            background: white;
+        }
+
+        .hero h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #666;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 84%;
+            margin: 30px auto;
+        }
+
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .section-title {
+            margin-bottom: 15px;
+        }
+
+        .notice {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .notice h3 {
+            color: #12355b;
+            margin-bottom: 8px;
+        }
+
+        .notice-meta {
+            color: #777;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .notice p {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .category {
+            display: inline-block;
+            background: #e8f0f8;
+            color: #12355b;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        footer {
+            margin-top: 50px;
+            background: #12355b;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+
+        <div class="logo">
+            <h1>Digital College Notice Board</h1>
+            <p>Cloud-Based College Announcement System</p>
+        </div>
+
+        <a href="/login" class="admin-button">
+            Admin Login
+        </a>
+
+    </div>
+</header>
+
+
+<section class="hero">
+
+    <h2>College Announcements</h2>
+
+    <p>
+        Stay updated with the latest academic, examination,
+        placement, event and general announcements from the college.
+    </p>
+
+</section>
+
+
+<div class="container">
+
+    <div class="search-box">
+
+    <form method="GET" action="/">
+
+        <div style="display:flex; gap:10px;">
+
+            <input
+                type="text"
+                name="search"
+                value="{{ search }}"
+                placeholder="Search notices..."
+                style="flex:1;"
+            >
+
+            <select
+                name="category"
+                style="
+                    width:180px;
+                    padding:13px;
+                    border:1px solid #ddd;
+                    border-radius:6px;
+                    font-size:15px;
+                "
+            >
+
+                <option value="">
+                    All Categories
+                </option>
+
+                <option value="Academic"
+                    {% if selected_category == "Academic" %}selected{% endif %}>
+                    Academic
+                </option>
+
+                <option value="Examination"
+                    {% if selected_category == "Examination" %}selected{% endif %}>
+                    Examination
+                </option>
+
+                <option value="Placement"
+                    {% if selected_category == "Placement" %}selected{% endif %}>
+                    Placement
+                </option>
+
+                <option value="Events"
+                    {% if selected_category == "Events" %}selected{% endif %}>
+                    Events
+                </option>
+
+                <option value="General"
+                    {% if selected_category == "General" %}selected{% endif %}>
+                    General
+                </option>
+
+            </select>
+
+            <button
+                type="submit"
+                style="
+                    background:#12355b;
+                    color:white;
+                    border:none;
+                    padding:0 20px;
+                    border-radius:6px;
+                    cursor:pointer;
+                    font-size:15px;
+                "
+            >
+                Search
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+    <h2 class="section-title">
+        Latest Notices
+    </h2>
+
+
+    {% if notices %}
+
+    {% for notice in notices %}
+
+    <div class="notice">
+
+        <h3>
+            {{ notice["title"] }}
+        </h3>
+
+        <div class="notice-meta">
+            Posted on: {{ notice["posted_date"] }}
+        </div>
+
+        <p>
+            {{ notice["description"] }}
+        </p>
+
+        <span class="category">
+            {{ notice["category"] }}
+        </span>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+<div class="notice">
+
+    <h3>
+        No Notices Found
+    </h3>
+
+    <p>
+        No published notices match your search or category.
+    </p>
+
+</div>
+
+{% endif %}
+
+        <div class="notice-meta">
+            Posted on: 21 September 2026
+        </div>
+
+        <p>
+            The examination timetable for the upcoming
+            semester examinations has been published.
+        </p>
+
+        <span class="category">
+            Examination
+        </span>
+
+    </div>
+
+
+    <div class="notice">
+
+        <h3>
+            Campus Placement Drive
+        </h3>
+
+        <div class="notice-meta">
+            Posted on: 20 September 2026
+        </div>
+
+        <p>
+            A campus recruitment drive will be conducted
+            for eligible final-year students.
+        </p>
+
+        <span class="category">
+            Placement
+        </span>
+
+    </div>
+
+
+    <div class="notice">
+
+        <h3>
+            College Arts Festival
+        </h3>
+
+        <div class="notice-meta">
+            Posted on: 18 September 2026
+        </div>
+
+        <p>
+            Students are invited to participate in the
+            upcoming college arts festival.
+        </p>
+
+        <span class="category">
+            Events
+        </span>
+
+    </div>
+
+</div>
+
+
+<footer>
+
+    <p>
+        © 2026 Digital College Notice Board
+    </p>
+
+    <p>
+        Cloud-Based College Information System
+    </p>
+
+</footer>
+
+</body>
+</html>
